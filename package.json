@@ -1,11 +1,11 @@
 {
   "name": "node-create-app",
   "version": "1.0.0",
-  "description": "Clear template for creation app",
-  "main": "index.js",
+  "description": "Template for creating an app on Node.js",
+  "main": "app.js",
   "scripts": {
-    "start": "rimraf ./dist && babel -d ./dist ./src -s && node dist/main.js",
-    "dev": "node dev.js",
+    "start": "rimraf ./dist && babel -d ./dist ./src -s && node dist/server.js",
+    "dev": "nodemon --exec node app.js",
     "lint:js": "eslint ./src",
     "lint-staged": "lint-staged"
   },
@@ -38,7 +38,13 @@
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-preset-env": "^1.2.0",
+    "basic-auth-connect": "^1.0.0",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.1",
+    "express": "^4.15.2",
     "lodash": "^4.17.4",
+    "mongoose": "^4.8.6",
     "rimraf": "^2.6.1"
   },
   "babel": {
