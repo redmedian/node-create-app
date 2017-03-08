@@ -1,6 +1,7 @@
 import express from 'express';
-import bodyparser from 'body-parser';
+import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import config from 'config';
 import mongoose from 'mongoose';
 import bluebird from 'bluebird';
 import basicAuth from 'basic-auth-connect';
@@ -9,18 +10,20 @@ import fs from 'fs';
 import path from 'path';
 import rfs from 'rotating-file-stream';
 
-import config from './config';
+// Регистрация роутов
 import pageRoute from './routes/page';
 
+// Настройка БД
 mongoose.Promise = bluebird;
-
 mongoose.connect(config.db);
+const db = mongoose.connection;
+db.on('error', global.console.error.bind(console, 'connection error:'));
 
 const app = express();
 
 app.use(cors({ origin: '*' }));
 
-// Запись лога в /logs/access.log
+// Запись лога в директорию /logs/
 const logDirectory = path.join(__dirname, '../logs');
 
 // Проверяем на наличие директории logDirectory
@@ -36,10 +39,17 @@ const accessLogStream = rfs('access.log', {
 // Настройки логгера Morgan
 app.use(morgan('combined', { stream: accessLogStream }));
 
-// Вывод лога в консоль (tiny, dev, combined)
-app.use(morgan('dev'));
+// Не показывать логи в тестовом окружении
+if (config.util.getEnv('NODE_ENV') !== 'test') {
+  // Вывод лога в консоль (tiny, dev, combined)
+  app.use(morgan('dev'));
+}
 
-app.use(bodyparser.json());
+// парсинг application/json
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: 'application/json' }));
 
 app.use('/api/*', basicAuth('admin', '12345'));
 app.use('/api', pageRoute);
@@ -48,3 +58,6 @@ app.get('/api', (req, res) => res.json({ message: 'Welcome to API' }));
 app.listen(process.env.PORT || 3000, () => {
   global.console.log('Example app listening on port 3000');
 });
+
+// Для тестирования
+module.exports = app;

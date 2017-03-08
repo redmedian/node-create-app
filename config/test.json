@@ -1,0 +1,3 @@
+{
+  "db": "mongodb://test:12345@ds123930.mlab.com:23930/heroku_t16344x6"
+}

@@ -7,7 +7,8 @@
     "start": "rimraf ./dist && babel -d ./dist ./src -s && node dist/server.js",
     "dev": "nodemon --exec node app.js",
     "lint:js": "eslint ./src",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "test": "nodemon --exec node app.js"
   },
   "author": "Sergey Anishchenko <sergey@pandajs.ru>",
   "license": "MIT",
@@ -41,6 +42,7 @@
     "basic-auth-connect": "^1.0.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
+    "config": "^1.25.1",
     "cors": "^2.8.1",
     "express": "^4.15.2",
     "lodash": "^4.17.4",
