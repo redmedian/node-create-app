@@ -1,15 +1,15 @@
-import Page from '../models/page';
+import Book from '../models/book';
 
 /*
- * GET /pages
+ * GET /books
  */
 // eslint-disable-next-line import/prefer-default-export, consistent-return
 export async function getAll(req, res, next) {
-  let pages;
+  let books;
 
   // Запрашиваем данные, в случае ошибки вернем error 500
   try {
-    pages = await Page.find();
+    books = await Book.find();
   } catch ({ message }) {
     return next({
       status: 500,
@@ -17,22 +17,22 @@ export async function getAll(req, res, next) {
     });
   }
 
-  // Если вывод дополнительно обернуть {}, то /api/pages будет иметь структуру с ключом "pages" - { "pages": [] }
-  res.json({ pages });
+  // Если вывод дополнительно обернуть {}, то /api/books будет иметь структуру с ключом "books" - { "books": [] }
+  res.json({ books });
 }
 
 /*
- * POST /pages
+ * POST /books
  */
 // eslint-disable-next-line import/prefer-default-export, consistent-return
 export async function create(req, res, next) {
-  let pages;
+  let books;
   // Получаем тело запроса в котором находятся данные о записях
-  const pageData = req.body;
+  const bookData = req.body;
 
   // Создаём запись, в случае ошибки вернем error 400
   try {
-    pages = await Page.create(pageData);
+    books = await Book.create(bookData);
   } catch ({ message }) {
     return next({
       status: 400,
@@ -41,22 +41,22 @@ export async function create(req, res, next) {
   }
 
   // Вернем запись пользователю
-  res.json({ message: 'success', pages });
+  res.json({ message: 'success', books });
 }
 
 /*
- * GET /pages/:id
+ * GET /books/:id
  */
 // eslint-disable-next-line import/prefer-default-export, consistent-return
-export async function getPage(req, res, next) {
+export async function getBook(req, res, next) {
   // Получаем id записи из параметров запроса
   // eslint-disable-next-line no-underscore-dangle
   const _id = req.params.id;
-  let page;
+  let book;
 
   // Получаем запись по её ID
   try {
-    page = await Page.findOne({ _id });
+    book = await Book.findOne({ _id });
   } catch ({ message }) {
     return next({
       status: 500,
@@ -65,32 +65,32 @@ export async function getPage(req, res, next) {
   }
 
   // Если звпись не найдена то вернём ошибку
-  if (!page) {
+  if (!book) {
     return next({
       status: 404,
-      message: 'Page not found',
+      message: 'Book not found',
     });
   }
 
   // Вернем запись пользователю
-  return res.json(page);
+  return res.json(book);
 }
 
 /*
- * PUT /pages/:id
+ * PUT /books/:id
  */
 // eslint-disable-next-line import/prefer-default-export, consistent-return
-export async function editPage(req, res, next) {
+export async function editBook(req, res, next) {
   // Получаем тело запроса в котором находятся данные о записях
-  const pageData = req.body;
+  const bookData = req.body;
   // Получаем id записи из параметров запроса
   // eslint-disable-next-line no-underscore-dangle
   const _id = req.params.id;
-  let page;
+  let book;
 
   // Получаем запись по её ID
   try {
-    page = await Page.findOne({ _id });
+    book = await Book.findOne({ _id });
   } catch ({ message }) {
     return next({
       status: 500,
@@ -99,18 +99,18 @@ export async function editPage(req, res, next) {
   }
 
   // Если звпись не найдена то вернём ошибку
-  if (!page) {
+  if (!book) {
     return next({
       status: 404,
-      message: 'Page not found',
+      message: 'Book not found',
     });
   }
 
-  // Добавляем данные из pageData
-  // ES6 функция Object.assign получает список объектов и копирует в первый параметр (page) свойства из остальных (pageData, etc, etc)
+  // Добавляем данные из bookData
+  // ES6 функция Object.assign получает список объектов и копирует в первый параметр (book) свойства из остальных (bookData, etc, etc)
   // Примеры работы Object.assign - https://learn.javascript.ru/es-object
   try {
-    Object.assign(page, pageData).save();
+    Object.assign(book, bookData).save();
   } catch ({ message }) {
     return next({
       status: 500,
@@ -119,22 +119,22 @@ export async function editPage(req, res, next) {
   }
 
   // Вернем сообщение об успешном обновлении записи
-  return res.json({ message: 'success', page });
+  return res.json({ message: 'success', book });
 }
 
 /*
- * DELETE /pages/:id
+ * DELETE /books/:id
  */
 // eslint-disable-next-line import/prefer-default-export, consistent-return
-export async function deletePage(req, res, next) {
+export async function deleteBook(req, res, next) {
   // Получаем id записи из параметров запроса
   // eslint-disable-next-line no-underscore-dangle
   const _id = req.params.id;
-  let page;
+  let book;
 
   // Получаем запись по её ID
   try {
-    page = await Page.findOne({ _id });
+    book = await Book.findOne({ _id });
   } catch ({ message }) {
     return next({
       status: 500,
@@ -143,10 +143,10 @@ export async function deletePage(req, res, next) {
   }
 
   // Если звпись не найдена то вернём ошибку
-  if (!page) {
+  if (!book) {
     return next({
       status: 404,
-      message: 'Page not found',
+      message: 'Book not found',
     });
   }
 

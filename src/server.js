@@ -11,7 +11,7 @@ import path from 'path';
 import rfs from 'rotating-file-stream';
 
 // Регистрация роутов
-import pageRoute from './routes/page';
+import bookRoute from './routes/book';
 
 // Настройка БД
 mongoose.Promise = bluebird;
@@ -20,6 +20,7 @@ const db = mongoose.connection;
 db.on('error', global.console.error.bind(console, 'connection error:'));
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(cors({ origin: '*' }));
 
@@ -51,11 +52,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
 
+app.get('/', (req, res) => res.send('Welcome'));
 app.use('/api/*', basicAuth('admin', '12345'));
-app.use('/api', pageRoute);
+app.use('/api', bookRoute);
 app.get('/api', (req, res) => res.json({ message: 'Welcome to API' }));
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(port, () => {
   global.console.log('Example app listening on port 3000');
 });
 
