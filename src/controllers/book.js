@@ -1,3 +1,4 @@
+// @flow
 import Book from '../models/book';
 
 /*
